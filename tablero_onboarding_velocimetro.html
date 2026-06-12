@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seguimiento de Onboarding — Grupo Verytel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0f12;--surface:#13161b;--surface2:#1a1e25;
+    --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+    --text:#e8eaf0;--text2:#8b90a0;--text3:#555b6e;
+    --accent:#4f8ef7;--green:#2dd4a0;--amber:#f59e3f;--red:#f06060;--gray:#888780;
+    --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;padding:24px;font-size:14px;}
+  #loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:12px;}
+  .spinner{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-text{font-size:12px;color:var(--text3);font-family:var(--mono);}
+  #empty{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:14px;text-align:center;}
+  .empty-title{font-size:18px;font-weight:300;color:var(--text2);}
+  .empty-sub{font-size:12px;color:var(--text3);font-family:var(--mono);max-width:420px;line-height:1.7;}
+  .demo-btn{background:transparent;border:.5px solid var(--border2);color:var(--text3);border-radius:8px;padding:8px 20px;font-family:var(--font);font-size:12px;cursor:pointer;}
+  .demo-btn:hover{border-color:var(--green);color:var(--green);}
+  #dash{display:none;}
+  .header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;padding-bottom:18px;border-bottom:.5px solid var(--border);}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+  .brand-name{font-size:12px;font-weight:500;color:var(--text3);letter-spacing:.04em;font-family:var(--mono);text-transform:uppercase;}
+  .header-right{text-align:right;}
+  .date-main{font-size:20px;font-weight:300;color:var(--text);}
+  .date-sub{font-size:10px;color:var(--text3);margin-top:3px;font-family:var(--mono);}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;}
+  .metric{background:var(--surface);border:.5px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;}
+  .metric::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:10px 10px 0 0;}
+  .m-blue::before{background:var(--accent);}.m-green::before{background:var(--green);}
+  .m-amber::before{background:var(--amber);}.m-red::before{background:var(--red);}
+  .metric-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);margin-bottom:5px;}
+  .metric-val{font-size:26px;font-weight:300;color:var(--text);}
+  .metric-sub{font-size:10px;color:var(--text3);margin-top:2px;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;}.metrics{grid-template-columns:repeat(2,1fr);}}
+  .card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:18px;}
+  .card-head{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+  .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;font-family:var(--mono);}
+  .c-name{font-size:15px;font-weight:500;color:var(--text);}
+  .c-role{font-size:11px;color:var(--text2);margin-top:1px;}
+  .gauge-wrap{display:flex;justify-content:center;margin:6px 0 14px;}
+  .blocks{display:flex;flex-direction:column;gap:7px;}
+  .blk{display:flex;align-items:center;gap:9px;font-size:11px;}
+  .blk-name{flex:1;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .blk-bar{width:70px;height:5px;background:var(--surface2);border-radius:99px;overflow:hidden;flex-shrink:0;}
+  .blk-fill{height:100%;border-radius:99px;transition:width .6s ease;}
+  .blk-pct{font-size:10px;color:var(--text3);font-family:var(--mono);width:34px;text-align:right;flex-shrink:0;}
+  .alert-chip{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--amber);background:rgba(245,158,63,.1);padding:2px 8px;border-radius:99px;margin-top:8px;font-family:var(--mono);}
+  .footer{margin-top:18px;padding-top:12px;border-top:.5px solid var(--border);font-size:10px;color:var(--text3);font-family:var(--mono);text-align:center;}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div><div class="loading-text">Cargando seguimiento…</div></div>
+
+<div id="empty">
+  <div style="display:flex;align-items:center;gap:8px;"><div class="brand-dot"></div><span style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;">Seguimiento de onboarding</span></div>
+  <div class="empty-title">Sin datos disponibles</div>
+  <div class="empty-sub">La rutina aún no ha generado el seguimiento, o no se encontraron datos.</div>
+  <button class="demo-btn" onclick="loadDemo()">Ver con datos de demo</button>
+</div>
+
+<div id="dash">
+  <div class="header">
+    <div class="brand"><div class="brand-dot"></div><span class="brand-name">Seguimiento de onboarding · Grupo Verytel</span></div>
+    <div class="header-right"><div class="date-main" id="d-fecha">—</div><div class="date-sub" id="d-sub">Actualizado hoy</div></div>
+  </div>
+  <div class="metrics">
+    <div class="metric m-blue"><div class="metric-label">Colaboradores</div><div class="metric-val" id="m-total">—</div><div class="metric-sub">en onboarding</div></div>
+    <div class="metric m-green"><div class="metric-label">Avance promedio</div><div class="metric-val" id="m-prom">—</div><div class="metric-sub">del grupo</div></div>
+    <div class="metric m-amber"><div class="metric-label">Cerca de terminar</div><div class="metric-val" id="m-altos">—</div><div class="metric-sub">sobre 90%</div></div>
+    <div class="metric m-red"><div class="metric-label">Con novedades</div><div class="metric-val" id="m-novedad">—</div><div class="metric-sub">reprogramados</div></div>
+  </div>
+  <div class="grid" id="people"></div>
+  <div class="footer" id="footer">Generado automáticamente</div>
+</div>
+
+<script>
+const AV=[['rgba(79,142,247,.15)','#4f8ef7'],['rgba(45,212,160,.15)','#2dd4a0'],['rgba(245,158,63,.15)','#f59e3f'],['rgba(83,74,183,.15)','#7f77dd'],['rgba(240,96,96,.15)','#f06060'],['rgba(99,153,34,.15)','#97c459']];
+function ini(s){return (s||'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('')||'?';}
+function avc(i){return AV[i%AV.length];}
+function colorFor(p){return p>=90?'#2dd4a0':p>=50?'#f59e3f':'#888780';}
+
+// Genera el SVG del velocímetro. Arco semicircular de 180°.
+function gauge(pct){
+  const r=75, cx=95, cy=105;
+  // Longitud del arco semicircular = π * r
+  const arcLen=Math.PI*r; // ~235.6
+  const offset=arcLen*(1-pct/100);
+  const color=colorFor(pct);
+  return `<svg width="190" height="120" viewBox="0 0 190 120">
+    <path d="M 20 105 A ${r} ${r} 0 0 1 170 105" fill="none" stroke="var(--surface2)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 20 105 A ${r} ${r} 0 0 1 170 105" fill="none" stroke="${color}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${arcLen.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"/>
+    <text x="${cx}" y="95" text-anchor="middle" font-size="30" font-weight="500" fill="var(--text)">${pct}%</text>
+    <text x="${cx}" y="112" text-anchor="middle" font-size="10" fill="var(--text2)">completado</text>
+  </svg>`;
+}
+
+function render(data){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('empty').style.display='none';
+  document.getElementById('dash').style.display='block';
+  document.getElementById('d-fecha').textContent=data.fecha||new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('footer').textContent='Generado automáticamente · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+
+  const people=data.colaboradores||[];
+  let suma=0, altos=0, novedades=0;
+
+  document.getElementById('people').innerHTML=people.map((p,i)=>{
+    const pct=Math.round(p.avance||0);
+    suma+=pct;
+    if(pct>=90) altos++;
+    const nov=p.novedades||0;
+    novedades+=nov;
+    const[bg,fg]=avc(i);
+    const bloques=(p.bloques||[]).map(b=>{
+      const bp=Math.round(b.pct||0);
+      return `<div class="blk"><span class="blk-name">${b.nombre}</span><div class="blk-bar"><div class="blk-fill" style="width:${bp}%;background:${colorFor(bp)};"></div></div><span class="blk-pct">${bp}%</span></div>`;
+    }).join('');
+    const alertChip=nov>0?`<div class="alert-chip"><span>⚠</span> ${nov} sesión(es) reprogramada(s)</div>`:'';
+    return `<div class="card">
+      <div class="card-head">
+        <div class="avatar" style="background:${bg};color:${fg}">${ini(p.nombre)}</div>
+        <div><div class="c-name">${p.nombre}</div><div class="c-role">${p.cargo||''}${p.ingreso?' · ingresó '+p.ingreso:''}</div></div>
+      </div>
+      <div class="gauge-wrap">${gauge(pct)}</div>
+      <div class="blocks">${bloques}</div>
+      ${alertChip}
+    </div>`;
+  }).join('');
+
+  document.getElementById('m-total').textContent=people.length;
+  document.getElementById('m-prom').textContent=people.length?Math.round(suma/people.length)+'%':'0%';
+  document.getElementById('m-altos').textContent=altos;
+  const mn=document.getElementById('m-novedad');
+  mn.textContent=novedades;
+  mn.style.color=novedades>0?'var(--amber)':'var(--text)';
+}
+
+function showEmpty(){document.getElementById('loading').style.display='none';document.getElementById('empty').style.display='flex';}
+
+window.addEventListener('DOMContentLoaded',async()=>{
+  const params=new URLSearchParams(window.location.search);
+  const jsonUrl=params.get('json');
+  if(jsonUrl){try{const r=await fetch(jsonUrl);const j=await r.json();try{localStorage.setItem('ob_v_last',JSON.stringify(j));}catch(e){}render(j);return;}catch(e){console.warn(e);}}
+  const enc=params.get('d');
+  if(enc){try{const j=JSON.parse(decodeURIComponent(escape(atob(enc))));try{localStorage.setItem('ob_v_last',JSON.stringify(j));}catch(e){}render(j);return;}catch(e){console.warn(e);}}
+  try{const s=localStorage.getItem('ob_v_last');if(s){render(JSON.parse(s));document.getElementById('d-sub').textContent='Datos guardados anteriormente';return;}}catch(e){}
+  showEmpty();
+});
+
+function loadDemo(){
+  const B=(n,p)=>({nombre:n,pct:p});
+  render({fecha:'jueves, 12 de junio de 2026',colaboradores:[
+    {nombre:'Dani Rodríguez',cargo:'Gerente Comercial',ingreso:'10 jun',avance:97,novedades:2,bloques:[
+      B('0 · Preingreso',100),B('1 · Inducción',100),B('2 · Bibliográficos',100),
+      B('3 · Ruta 1 Básico',92),B('4 · Ruta 2 Interm.',92),B('5 · Ruta 3 Avanz.',100)]},
+    {nombre:'Carlos Mendoza',cargo:'Ingeniero de proyectos',ingreso:'4 jun',avance:57,novedades:0,bloques:[
+      B('0 · Preingreso',100),B('1 · Inducción',100),B('2 · Bibliográficos',50),
+      B('3 · Ruta 1 Básico',60),B('4 · Ruta 2 Interm.',30),B('5 · Ruta 3 Avanz.',0)]},
+    {nombre:'Ana Torres',cargo:'Coordinadora comercial',ingreso:'9 jun',avance:34,novedades:1,bloques:[
+      B('0 · Preingreso',100),B('1 · Inducción',80),B('2 · Bibliográficos',0),
+      B('3 · Ruta 1 Básico',20),B('4 · Ruta 2 Interm.',0),B('5 · Ruta 3 Avanz.',0)]},
+    {nombre:'Jorge Vargas',cargo:'Técnico instalador',ingreso:'9 jun',avance:22,novedades:0,bloques:[
+      B('0 · Preingreso',100),B('1 · Inducción',50),B('2 · Bibliográficos',0),
+      B('3 · Ruta 1 Básico',10),B('4 · Ruta 2 Interm.',0),B('5 · Ruta 3 Avanz.',0)]}
+  ]});
+}
+</script>
+</body>
+</html>
