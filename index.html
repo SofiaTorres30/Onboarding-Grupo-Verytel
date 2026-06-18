@@ -61,9 +61,6 @@
   .c-name{font-size:14px;font-weight:500;color:var(--text);}
   .c-role{font-size:11px;color:var(--text2);margin-top:1px;}
   .gauge-wrap{display:flex;justify-content:center;margin:4px 0;}
-  .hours{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;padding-top:11px;border-top:.5px solid var(--border);}
-  .hours-val{font-size:16px;font-weight:500;color:var(--text);font-family:var(--mono);}
-  .hours-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;}
   .empty-area{font-size:12px;color:var(--text3);font-family:var(--mono);padding:30px;text-align:center;}
   .area-therm{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px;display:flex;align-items:center;gap:24px;}
   .therm-gauge{flex-shrink:0;}
@@ -75,6 +72,14 @@
   .therm-stat-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;}
   @media(max-width:560px){.area-therm{flex-direction:column;gap:14px;text-align:center;}.therm-stats{justify-content:center;}}
   .footer{margin-top:18px;padding-top:12px;border-top:.5px solid var(--border);font-size:10px;color:var(--text3);font-family:var(--mono);text-align:center;}
+  .c-ingreso{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:2px;}
+  .bl-section{margin-top:8px;padding-top:8px;border-top:.5px solid var(--border);}
+  .bl-row{display:flex;align-items:center;gap:6px;margin:2px 0;}
+  .bl-name{font-size:9px;color:var(--text3);font-family:var(--mono);width:76px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .bl-bar{flex:1;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+  .bl-fill{height:100%;border-radius:2px;}
+  .bl-pct{font-size:9px;color:var(--text3);font-family:var(--mono);width:28px;text-align:right;flex-shrink:0;}
+  .nov-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-family:var(--mono);color:var(--amber);background:rgba(245,158,63,.12);border:.5px solid rgba(245,158,63,.3);border-radius:6px;padding:2px 8px;margin-top:6px;}
 </style>
 </head>
 <body>
@@ -132,7 +137,6 @@ function gaugeBig(pct){
   </svg>`;
 }
 
-
 let current={area:null,sub:null};
 
 function countPeople(area){
@@ -160,17 +164,12 @@ function toggleArea(ai){
   const subs=document.getElementById('subs-'+ai);
   const chev=document.getElementById('chev-'+ai);
   const area=DATA.areas[ai];
-  // Si el área no tiene subáreas, mostrar directamente sus colaboradores
   if(!(area.subareas||[]).length){
     showPeople(area.nombre, area.colaboradores||[], area.nombre);
     document.querySelectorAll('.sub').forEach(s=>s.classList.remove('active'));
     return;
   }
-  if(subs){
-    const isOpen=subs.classList.contains('open');
-    subs.classList.toggle('open');
-    chev.classList.toggle('open');
-  }
+  if(subs){subs.classList.toggle('open');chev.classList.toggle('open');}
 }
 
 function selectSub(ai,si){
@@ -189,9 +188,8 @@ function showPeople(titulo, gente, subtitulo){
   const cont=document.getElementById('cards');
   if(!gente.length){therm.innerHTML='';cont.innerHTML='<div class="empty-area">No hay colaboradores en esta área.</div>';return;}
 
-  // Termómetro general del área: promedio de avance y suma de horas
   const promedio=Math.round(gente.reduce((s,p)=>s+(p.avance||0),0)/gente.length);
-  const totalHoras=gente.reduce((s,p)=>s+(Number(p.horas)||0),0);
+  const totalNov=gente.reduce((s,p)=>s+(Number(p.novedades)||0),0);
   const completos=gente.filter(p=>(p.avance||0)>=100).length;
   const gaugeColor=colorFor(promedio);
   therm.innerHTML=`<div class="area-therm">
@@ -202,7 +200,7 @@ function showPeople(titulo, gente, subtitulo){
         <div class="therm-stat"><span class="therm-stat-val" style="color:${gaugeColor}">${promedio}%</span><span class="therm-stat-label">Avance promedio</span></div>
         <div class="therm-stat"><span class="therm-stat-val">${gente.length}</span><span class="therm-stat-label">Colaboradores</span></div>
         <div class="therm-stat"><span class="therm-stat-val">${completos}</span><span class="therm-stat-label">Al 100%</span></div>
-        <div class="therm-stat"><span class="therm-stat-val">${totalHoras % 1 === 0 ? totalHoras : totalHoras.toFixed(1)}</span><span class="therm-stat-label">Horas totales</span></div>
+        <div class="therm-stat"><span class="therm-stat-val" style="color:${totalNov>0?'var(--amber)':'var(--text)'}">${totalNov}</span><span class="therm-stat-label">Reprogramadas</span></div>
       </div>
     </div>
   </div>`;
@@ -210,18 +208,20 @@ function showPeople(titulo, gente, subtitulo){
   cont.innerHTML=gente.map((p,i)=>{
     const pct=Math.round(p.avance||0);
     const[bg,fg]=avc(i);
-    const horas=p.horas!=null?p.horas:'—';
+    const ingresoHtml=p.ingreso?`<div class="c-ingreso">${p.ingreso}</div>`:'';
+    const bloquesHtml=(p.bloques||[]).map(b=>{
+      const bp=Math.min(b.pct,100);
+      return `<div class="bl-row"><span class="bl-name" title="${b.nombre}">${b.nombre}</span><div class="bl-bar"><div class="bl-fill" style="width:${bp}%;background:${colorFor(bp)}"></div></div><span class="bl-pct">${b.pct}%</span></div>`;
+    }).join('');
+    const novBadge=(p.novedades||0)>0?`<div class="nov-badge">⚑ ${p.novedades} reprogramada${p.novedades===1?'':'s'}</div>`:'';
+    const bloqSection=bloquesHtml?`<div class="bl-section">${bloquesHtml}</div>`:'';
     return `<div class="card">
       <div class="card-head">
         <div class="avatar" style="background:${bg};color:${fg}">${ini(p.nombre)}</div>
-        <div><div class="c-name">${p.nombre}</div><div class="c-role">${p.cargo||''}</div></div>
+        <div><div class="c-name">${p.nombre}</div><div class="c-role">${p.cargo||''}</div>${ingresoHtml}</div>
       </div>
       <div class="gauge-wrap">${gauge(pct)}</div>
-      <div class="hours">
-        <span style="font-size:14px;color:var(--text2);">🕐</span>
-        <span class="hours-val">${horas}</span>
-        <span class="hours-label">horas onboarding</span>
-      </div>
+      ${bloqSection}${novBadge}
     </div>`;
   }).join('');
 }
@@ -234,15 +234,10 @@ function render(data){
   document.getElementById('d-fecha').textContent=data.fecha||new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   document.getElementById('footer').textContent='Generado automáticamente · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
   buildNav();
-  // Abrir la primera área con contenido por defecto
   const firstArea=DATA.areas[0];
   if(firstArea){
-    if((firstArea.subareas||[]).length){
-      toggleArea(0);
-      selectSub(0,0);
-    }else{
-      showPeople(firstArea.nombre, firstArea.colaboradores||[], firstArea.nombre);
-    }
+    if((firstArea.subareas||[]).length){toggleArea(0);selectSub(0,0);}
+    else{showPeople(firstArea.nombre, firstArea.colaboradores||[], firstArea.nombre);}
   }
 }
 
@@ -255,35 +250,14 @@ window.addEventListener('DOMContentLoaded',async()=>{
   const enc=params.get('d');
   if(enc){try{const j=JSON.parse(decodeURIComponent(escape(atob(enc))));try{localStorage.setItem('ob_a_last',JSON.stringify(j));}catch(e){}render(j);return;}catch(e){console.warn(e);}}
   try{const s=localStorage.getItem('ob_a_last');if(s){render(JSON.parse(s));document.getElementById('d-sub').textContent='Datos guardados anteriormente';return;}}catch(e){}
+  try{const r=await fetch('./data.json');if(r.ok){const j=await r.json();try{localStorage.setItem('ob_a_last',JSON.stringify(j));}catch(e){}render(j);return;}}catch(e){console.warn('data.json',e);}
   showEmpty();
 });
 
 function loadDemo(){
-  const P=(nombre,cargo,avance,horas)=>({nombre,cargo,avance,horas});
-  render({fecha:'jueves, 12 de junio de 2026',areas:[
-    {nombre:'1. Presidencia',colaboradores:[P('Roberto Silva','Presidente',100,40)],subareas:[]},
-    {nombre:'2. Gerencia Comercial',subareas:[
-      {nombre:'01 Comercial',colaboradores:[P('Dani Rodríguez','Gerente Comercial',97,95.5),P('Ana Torres','Asistente Comercial',56,52)]},
-      {nombre:'02 Mercadeo',colaboradores:[P('Erika Robles','Directora de Mercadeo',78,60)]},
-      {nombre:'03 Preventa',colaboradores:[P('Jefferson Herrera','Gerente de Producto',88,72),P('Andrés Díaz','Ing. de Preventa',45,38)]},
-      {nombre:'04 Producto',colaboradores:[P('Camilo Cardona','Ing. de Preventa',62,50)]}
-    ]},
-    {nombre:'3. Gerencia Operaciones',subareas:[
-      {nombre:'01 Fábrica de Software',colaboradores:[P('Evilio Polo','Arquitecto SW',70,55)]},
-      {nombre:'02 Operaciones',colaboradores:[P('Sandra Layton','Gerente de Operaciones',92,80)]},
-      {nombre:'03 Documental',colaboradores:[]},
-      {nombre:'04 Ingeniería y Producción',colaboradores:[P('Sebastián Hernández','Líder de Ingeniería',54,44)]}
-    ]},
-    {nombre:'4. Estrategia e Innovación',subareas:[
-      {nombre:'01 Estrategia de Innovación',colaboradores:[P('Laury Rincón','Gerente de Estrategia',85,68)]}
-    ]},
-    {nombre:'5. Gerencia TH / SST',subareas:[
-      {nombre:'01 Talento Humano',colaboradores:[P('Nathaly Rincón','Gerente de TH',95,78)]},
-      {nombre:'02 SG SST',colaboradores:[P('Ivonne Hernández','Directora de SST',60,48)]}
-    ]},
-    {nombre:'6. Dirección Financiera',subareas:[
-      {nombre:'01 Administrativo y Financiero',colaboradores:[P('Vivian Rodríguez','Directora Financiera',82,65)]}
-    ]}
+  const P=(nombre,cargo,avance)=>({nombre,cargo,avance});
+  render({fecha:'18 de junio de 2026',areas:[
+    {nombre:'Demo',colaboradores:[P('Colaborador Demo','Cargo Demo',75)],subareas:[]}
   ]});
 }
 </script>
