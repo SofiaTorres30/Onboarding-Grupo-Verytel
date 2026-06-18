@@ -1,0 +1,325 @@
+$ cat /home/user/Onboarding-Grupo-Verytel/data.json
+
+{
+  "fecha": "18 de junio de 2026",
+  "areas": [
+    {
+      "nombre": "Gerencia Comercial",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Dani Zorelly Rodriguez Ramirez",
+          "cargo": "Gerente Comercial",
+          "ingreso": "6 de enero de 2026",
+          "avance": 97,
+          "novedades": 2,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct": 100},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  92},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  92},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "Katherine Aranda Rodriguez",
+          "cargo": "Gerente de Cuenta Junior",
+          "ingreso": "2 de marzo de 2026",
+          "avance": 85,
+          "novedades": 2,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":  25},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  96},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  91},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "Duban Lopez Duque",
+          "cargo": "Lider de Pricing",
+          "ingreso": "2 de marzo de 2026",
+          "avance": 84,
+          "novedades": 1,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":  25},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  87},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  91},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "Jorge Alberto Beltran Moreno",
+          "cargo": "Lider de Planeación Comercial",
+          "ingreso": "2 de marzo de 2026",
+          "avance": 85,
+          "novedades": 1,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":  25},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  95},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  91},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "Luis Fernando Amezquita Vasquez",
+          "cargo": "Gerente de Cuenta Senior",
+          "ingreso": "2 de marzo de 2026",
+          "avance": 85,
+          "novedades": 2,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":  25},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  92},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  91},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "Leonardo Santos Cleves",
+          "cargo": "Gerente Comercial",
+          "ingreso": "10 de junio de 2025",
+          "avance": 47,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  85},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  60},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  40},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Preventa",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Edward Ortiz Tejada",
+          "cargo": "Gerente Preventa",
+          "ingreso": "3 de junio de 2026",
+          "avance": 59,
+          "novedades": 3,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  85},
+            {"nombre": "2 - Bibliográficos","pct": 100},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  44},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  26},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Comercial",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Angie Tatiana Goyeneche Gordillo",
+          "cargo": "Profesional de Soporte Comercial",
+          "ingreso": "20 de mayo de 2026",
+          "avance": 70,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct": 100},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  33},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":  33}
+          ]
+        },
+        {
+          "nombre": "Camilo Esteban Gil Niño",
+          "cargo": "Ingeniero de Producto",
+          "ingreso": "3 de junio de 2026",
+          "avance": 35,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  92},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":   7},
+            {"nombre": "4 - Ruta 2 Interm.","pct":   9},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Fábrica de Software",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Marlon Algarra Zambrano",
+          "cargo": "Ingeniero Machine Learning",
+          "ingreso": "4 de junio de 2026",
+          "avance": 61,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  64},
+            {"nombre": "4 - Ruta 2 Interm.","pct":   0},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "José Luis Bracho Escobar",
+          "cargo": "Ingeniero Desarrollo Senior Tipo II",
+          "ingreso": "20 de mayo de 2026",
+          "avance": 55,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  27},
+            {"nombre": "4 - Ruta 2 Interm.","pct": 100},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Operaciones",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Guillermo Alejandro Cortina",
+          "cargo": "Practicante Administrativo-Operativo",
+          "ingreso": "9 de abril de 2026",
+          "avance": 61,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  58},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  75},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  71},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        },
+        {
+          "nombre": "Henry Alexander Torres Beltrán",
+          "cargo": "Coordinador Gestor Documental",
+          "ingreso": "24 de abril de 2026",
+          "avance": 47,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  78},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  57},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  50},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        },
+        {
+          "nombre": "Martha Liliana Vanegas Rios",
+          "cargo": "Analista de Gestión Documental",
+          "ingreso": "24 de abril de 2026",
+          "avance": 41,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  44},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  50},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  50},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "SST",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Faride Nayibe Saab",
+          "cargo": "Directora SST y MA",
+          "ingreso": "6 de enero de 2026",
+          "avance": 100,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct": 100},
+            {"nombre": "3 - Ruta 1 Básico", "pct": 100},
+            {"nombre": "4 - Ruta 2 Interm.","pct": 100},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        },
+        {
+          "nombre": "Laura Camila Rico Muñoz",
+          "cargo": "Coordinador SSTA",
+          "ingreso": "14 de abril de 2026",
+          "avance": 35,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct":  46},
+            {"nombre": "2 - Bibliográficos","pct":   0},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  29},
+            {"nombre": "4 - Ruta 2 Interm.","pct":   0},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Talento Humano",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Sofia Torres Diaz",
+          "cargo": "Profesional en Formación y Desarrollo",
+          "ingreso": "2 de marzo de 2026",
+          "avance": 46,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct":  33},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  83},
+            {"nombre": "4 - Ruta 2 Interm.","pct":  50},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct":   0}
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Estrategia e Innovación",
+      "subareas": [],
+      "colaboradores": [
+        {
+          "nombre": "Diego Ricardo Sanchez Vargas",
+          "cargo": "Profesional de Procesos",
+          "ingreso": "14 de mayo de 2026",
+          "avance": 98,
+          "novedades": 0,
+          "bloques": [
+            {"nombre": "0 - Preingreso",    "pct": 100},
+            {"nombre": "1 - Inducción",     "pct": 100},
+            {"nombre": "2 - Bibliográficos","pct": 100},
+            {"nombre": "3 - Ruta 1 Básico", "pct":  88},
+            {"nombre": "4 - Ruta 2 Interm.","pct": 100},
+            {"nombre": "5 - Ruta 3 Avanz.", "pct": 100}
+          ]
+        }
+      ]
+    }
+  ]
+}
