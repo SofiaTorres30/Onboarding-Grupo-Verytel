@@ -1,0 +1,52 @@
+name: Rutinas / Tablero Onboarding
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Cada día a las 7:00
+  workflow_dispatch:     # También manual
+
+jobs:
+  fetch-and-save:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependencias
+        run: npm install @microsoft/microsoft-graph-client isomorphic-fetch
+
+      - name: Ejecutar script para obtener datos
+        env:
+          ONEDRIVE_REFRESH_TOKEN: ${{ secrets.ONEDRIVE_REFRESH_TOKEN }}
+        run: node scripts/fetch-onboarding-data.js
+
+      - name: Crear carpeta data si no existe
+        run: mkdir -p data
+
+      - name: Guardar JSON en carpeta data
+        run: |
+          if [ -f onboarding-raw.json ]; then
+            mv onboarding-raw.json data/onboarding.json
+            echo "✅ JSON guardado en: data/onboarding.json"
+          fi
+
+      - name: Commit y push cambios
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add data/onboarding.json
+          git commit -m "✅ Actualización automática - $(date '+%d/%m/%Y %H:%M')" || echo "Sin cambios"
+          git push
+
+      - name: Mostrar URL final
+        run: |
+          echo "🎉 Tablero disponible en:"
+          echo "https://sofiatorre30.github.io/Onboarding-Grupo-Verytel/"
